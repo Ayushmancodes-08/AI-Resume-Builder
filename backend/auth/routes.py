@@ -24,7 +24,8 @@ def register(user_in: LoginRequest, db: Session = Depends(get_db)):
     
     # Hash password and save user
     hashed_pwd = hash_password(user_in.password)
-    new_user = User(email=user_in.email, hashed_password=hashed_pwd)
+    email_name = user_in.email.split('@')[0] if '@' in user_in.email else "User"
+    new_user = User(email=user_in.email, hashed_password=hashed_pwd, name=email_name)
     
     db.add(new_user)
     db.commit()

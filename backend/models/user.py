@@ -15,6 +15,16 @@ class User(Base):
     created_at = Column(DateTime(timezone=True), default=datetime.utcnow)
     updated_at = Column(DateTime(timezone=True), onupdate=datetime.utcnow)
 
+    @property
+    def hashed_password(self) -> str:
+        if isinstance(self.password_hash, dict):
+            return self.password_hash.get("hash", "")
+        return str(self.password_hash)
+
+    @hashed_password.setter
+    def hashed_password(self, value: str):
+        self.password_hash = {"hash": value}
+
     # Relationship to Resumes table (One-to-Many)
     resumes = relationship('Resume', back_populates='user')
 

@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, JSON, Text, Index
+from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from backend.database.base import Base
 from datetime import datetime
@@ -7,7 +8,7 @@ class Resume(Base):
     __tablename__ = 'resumes'
 
     id = Column(Integer, primary_key=True)
-    user_id = Column(String(50), ForeignKey('users.id'), nullable=False)
+    user_id = Column(UUID(as_uuid=True), ForeignKey('users.id'), nullable=False)
     title = Column(String(100))
     summary = Column(Text)
     template_id = Column(Integer, ForeignKey('templates.id'))
